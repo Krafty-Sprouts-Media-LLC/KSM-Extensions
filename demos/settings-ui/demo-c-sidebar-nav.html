@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Demo C – Sidebar navigation</title>
+	<style>
+		* { box-sizing: border-box; }
+		body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, sans-serif; font-size: 14px; line-height: 1.5; color: #1d2327; background: #f0f0f1; margin: 0; padding: 24px; }
+		.layout { max-width: 1000px; margin: 0 auto; display: flex; gap: 24px; align-items: flex-start; }
+		.sidebar { width: 200px; flex-shrink: 0; background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.06); overflow: hidden; position: sticky; top: 24px; }
+		.sidebar a { display: block; padding: 12px 16px; color: #1d2327; text-decoration: none; border-left: 3px solid transparent; font-size: 13px; }
+		.sidebar a:hover { background: #f6f7f7; }
+		.sidebar a.active { background: #f0f6fc; border-left-color: #2271b1; color: #2271b1; font-weight: 500; }
+		.main { flex: 1; min-width: 0; }
+		.hero { background: #fff; padding: 24px 28px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+		.hero h1 { margin: 0 0 6px; font-size: 22px; font-weight: 600; }
+		.hero p { margin: 0; color: #646970; font-size: 14px; }
+		.panel { background: #fff; padding: 24px 28px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+		.panel h2 { margin: 0 0 6px; font-size: 15px; font-weight: 600; }
+		.panel .sub { margin: 0 0 18px; color: #646970; font-size: 13px; }
+		.toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f0f0f1; }
+		.toggle-row:last-child { border-bottom: none; }
+		.toggle { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+		.toggle input { opacity: 0; width: 0; height: 0; }
+		.toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #c3c4c7; transition: .2s; border-radius: 24px; }
+		.toggle-slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background: #fff; transition: .2s; border-radius: 50%; box-shadow: 0 1px 2px rgba(0,0,0,.2); }
+		.toggle input:checked + .toggle-slider { background: #2271b1; }
+		.toggle input:checked + .toggle-slider:before { transform: translateX(20px); }
+		.chk-group { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+		.chk-group label { display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 13px; }
+		.input-wrap { margin-top: 12px; }
+		.input-wrap label { display: block; margin-bottom: 4px; font-weight: 500; font-size: 13px; }
+		.input-wrap input { padding: 8px 12px; border: 1px solid #8c8f94; border-radius: 4px; font-size: 14px; width: 100px; }
+		.submit-panel { background: #fff; padding: 20px 28px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+		.button-primary { background: #2271b1; color: #fff; border: none; padding: 10px 20px; font-size: 14px; border-radius: 4px; cursor: pointer; }
+	</style>
+</head>
+<body>
+	<div class="layout">
+		<nav class="sidebar">
+			<a href="#scope" class="active">Scope</a>
+			<a href="#display">Display</a>
+			<a href="#performance">Performance</a>
+		</nav>
+		<div class="main">
+			<div class="hero">
+				<h1>Extension name</h1>
+				<p>Short description of what this extension does. One or two lines.</p>
+			</div>
+
+			<form method="post" action="">
+				<div class="panel" id="scope">
+					<h2>Post types</h2>
+					<p class="sub">Choose which content types to include.</p>
+					<div class="chk-group">
+						<label><input type="checkbox" name="pt[]" value="post" checked> Posts</label>
+						<label><input type="checkbox" name="pt[]" value="page" checked> Pages</label>
+						<label><input type="checkbox" name="pt[]" value="cpt"> Custom Post Type</label>
+					</div>
+				</div>
+
+				<div class="panel" id="display">
+					<h2>Options</h2>
+					<p class="sub">Control where this extension appears in the admin.</p>
+					<div class="toggle-row">
+						<span>Show in list tables</span>
+						<label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+					</div>
+					<div class="toggle-row">
+						<span>Dashboard widget</span>
+						<label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label>
+					</div>
+				</div>
+
+				<div class="panel" id="performance">
+					<h2>Cache duration</h2>
+					<p class="sub">How long to cache results.</p>
+					<div class="input-wrap">
+						<label for="cache">Seconds</label>
+						<input type="number" id="cache" name="cache" value="43200" min="0" step="1">
+					</div>
+				</div>
+
+				<div class="submit-panel">
+					<button type="submit" class="button-primary">Save changes</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,265 @@
+/**
+ * KSM Extensions – Settings page design (2.0.0 / demo-e KSM refined)
+ * Applied to extension settings pages: Media Counter, Image Title & Alt, Featured Image Manager, Auto Upload Images.
+ *
+ * @package KSM_Extensions
+ * @since 2.0.0
+ */
+
+/* Wrap: constrain width and spacing inside WP admin */
+.ksm-wrap.ksm-settings-page {
+	max-width: 760px;
+	margin-top: 0;
+	padding-top: 8px;
+}
+
+.ksm-wrap.ksm-settings-page .ksm-admin-layout {
+	display: block;
+}
+
+/* Hero */
+.ksm-wrap.ksm-settings-page .ksm-admin__hero {
+	margin-top: 0;
+	margin-bottom: 24px;
+	padding: 0;
+	background: transparent;
+	border: none;
+}
+
+.ksm-wrap.ksm-settings-page .ksm-admin__hero h1 {
+	margin: 0 0 8px;
+	font-size: 24px;
+	font-weight: 600;
+}
+
+.ksm-wrap.ksm-settings-page .ksm-admin__hero .ksm-admin__subhead {
+	margin: 0;
+	color: #646970;
+	font-size: 14px;
+	line-height: 1.5;
+}
+
+/* Card */
+.ksm-wrap.ksm-settings-page .ksm-card {
+	background: #fff;
+	border-radius: 8px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+	margin-bottom: 24px;
+	overflow: hidden;
+	border: none;
+}
+
+.ksm-wrap.ksm-settings-page .ksm-card__body {
+	padding: 24px 28px;
+}
+
+/* Sections */
+.ksm-wrap.ksm-settings-page .ksm-section {
+	padding: 20px 0;
+	border-bottom: 1px solid #f0f0f1;
+}
+
+.ksm-wrap.ksm-settings-page .ksm-section:last-child {
+	border-bottom: none;
+	padding-bottom: 0;
+}
+
+.ksm-wrap.ksm-settings-page .ksm-section:first-child {
+	padding-top: 0;
+}
+
+.ksm-wrap.ksm-settings-page .ksm-fieldset__header h3,
+.ksm-wrap.ksm-settings-page .ksm-section h3,
+.ksm-wrap.ksm-settings-page .ksm-section-title {
+	margin: 0 0 8px;
+	font-size: 15px;
+	font-weight: 600;
+}
+
+.ksm-wrap.ksm-settings-page .ksm-field__description {
+	margin: 0 0 14px;
+	font-size: 13px;
+	color: #646970;
+}
+
+/* Checkbox row: single on/off options (one control type only) */
+.ksm-wrap.ksm-settings-page .ksm-checkbox-row {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 12px;
+	cursor: pointer;
+	font-size: 14px;
+}
+
+.ksm-wrap.ksm-settings-page .ksm-section .ksm-checkbox-row:last-child,
+.ksm-wrap.ksm-settings-page .ksm-fieldset .ksm-checkbox-row:last-child {
+	margin-bottom: 0;
+}
+
+.ksm-wrap.ksm-settings-page .ksm-checkbox-row input[type="checkbox"] {
+	margin: 0;
+	flex-shrink: 0;
+}
+
+.ksm-wrap.ksm-settings-page .ksm-checkbox-row__label {
+	flex: 1;
+	min-width: 0;
+}
+
+/* Toggle: kept for backward compatibility; extension settings use checkbox rows only */
+.ksm-wrap.ksm-settings-page .ksm-section .ksm-toggle {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 16px;
+	flex-wrap: wrap;
+	margin-bottom: 16px;
+}
+
+.ksm-wrap.ksm-settings-page .ksm-section .ksm-toggle:last-child {
+	margin-bottom: 0;
+}
+
+.ksm-wrap.ksm-settings-page .ksm-toggle__label {
+	order: -1;
+	flex: 1;
+	min-width: 0;
+	font-size: 14px;
+	font-weight: 500;
+}
+
+.ksm-wrap.ksm-settings-page .ksm-toggle .ksm-toggle__track {
+	position: relative;
+	width: 48px;
+	height: 26px;
+	flex-shrink: 0;
+	border-radius: 26px;
+	display: inline-block;
+}
+
+.ksm-wrap.ksm-settings-page .ksm-toggle .ksm-toggle__thumb {
+	position: absolute;
+	height: 20px;
+	width: 20px;
+	left: 3px;
+	bottom: 3px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.ksm-wrap.ksm-settings-page .ksm-toggle input:checked + .ksm-toggle__track .ksm-toggle__thumb {
+	transform: translateX(22px);
+}
+
+.ksm-wrap.ksm-settings-page .ksm-toggle input:checked + .ksm-toggle__track {
+	background-color: #2271b1;
+}
+
+/* Pill list (post types, etc.) */
+.ksm-wrap.ksm-settings-page .ksm-pill-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+.ksm-wrap.ksm-settings-page .ksm-pill-list .ksm-checkbox {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 10px 16px;
+	background: #f6f7f7;
+	border: 1px solid #dcdcde;
+	border-radius: 8px;
+	cursor: pointer;
+	font-size: 13px;
+	transition: border-color 0.15s, background 0.15s;
+}
+
+.ksm-wrap.ksm-settings-page .ksm-pill-list .ksm-checkbox:hover {
+	border-color: #c3c4c7;
+}
+
+.ksm-wrap.ksm-settings-page .ksm-pill-list label {
+	padding: 10px 16px;
+	background: #f6f7f7;
+	border: 1px solid #dcdcde;
+	border-radius: 8px;
+	cursor: pointer;
+	font-size: 13px;
+	transition: border-color 0.15s, background 0.15s;
+}
+
+.ksm-wrap.ksm-settings-page .ksm-pill-list label:hover {
+	border-color: #c3c4c7;
+}
+
+.ksm-wrap.ksm-settings-page .ksm-pill-list label:has(input:checked) {
+	background: #2271b1;
+	border-color: #2271b1;
+	color: #fff;
+}
+
+/* Input blocks */
+.ksm-wrap.ksm-settings-page .ksm-input-block,
+.ksm-wrap.ksm-settings-page .ksm-input-block .ksm-input-label {
+	display: block;
+	margin-bottom: 6px;
+	font-size: 13px;
+	font-weight: 500;
+}
+
+.ksm-wrap.ksm-settings-page .ksm-input-block input[type="text"],
+.ksm-wrap.ksm-settings-page .ksm-input-block input[type="number"],
+.ksm-wrap.ksm-settings-page .ksm-input-block select {
+	padding: 8px 12px;
+	border: 1px solid #8c8f94;
+	border-radius: 6px;
+	font-size: 14px;
+}
+
+.ksm-wrap.ksm-settings-page .ksm-input-block input[type="number"].small-text {
+	width: 110px;
+}
+
+.ksm-wrap.ksm-settings-page .ksm-input-block .description,
+.ksm-wrap.ksm-settings-page .description.ksm-input-hint {
+	margin-top: 6px;
+	font-size: 12px;
+	color: #646970;
+}
+
+/* Card footer */
+.ksm-wrap.ksm-settings-page .ksm-card__footer {
+	padding: 20px 28px;
+	background: #f9f9f9;
+	border-top: 1px solid #f0f0f1;
+}
+
+.ksm-wrap.ksm-settings-page .ksm-card__footer .button-primary,
+.ksm-wrap.ksm-settings-page .ksm-card__footer .button.primary {
+	border-radius: 6px;
+	font-weight: 500;
+	padding: 10px 20px;
+}
+
+/* Form grid: keep sections readable */
+.ksm-wrap.ksm-settings-page .ksm-form-grid {
+	display: block;
+}
+
+.ksm-wrap.ksm-settings-page .ksm-form-grid .ksm-fieldset {
+	margin-bottom: 20px;
+}
+
+.ksm-wrap.ksm-settings-page .ksm-form-grid .ksm-fieldset:last-child {
+	margin-bottom: 0;
+}
+
+/* Bottom note (e.g. Core Extensions link) */
+.ksm-wrap.ksm-settings-page .ksm-card__body > p.description {
+	margin-top: 20px;
+	padding-top: 16px;
+	border-top: 1px solid #f0f0f1;
+	font-size: 13px;
+	color: #646970;
+}

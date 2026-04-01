@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Demo E – KSM refined (card + sections)</title>
+	<style>
+		* { box-sizing: border-box; }
+		body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, sans-serif; font-size: 14px; line-height: 1.5; color: #1d2327; background: #f0f0f1; margin: 0; padding: 24px; }
+		.wrap { max-width: 760px; margin: 0 auto; }
+		.hero { margin-bottom: 24px; }
+		.hero h1 { margin: 0 0 8px; font-size: 24px; font-weight: 600; }
+		.hero-sub { margin: 0; color: #646970; font-size: 14px; line-height: 1.5; }
+		.card { background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.06); margin-bottom: 24px; overflow: hidden; }
+		.card-body { padding: 24px 28px; }
+		.section { padding: 20px 0; border-bottom: 1px solid #f0f0f1; }
+		.section:last-child { border-bottom: none; padding-bottom: 0; }
+		.section:first-child { padding-top: 0; }
+		.section h2 { margin: 0 0 8px; font-size: 15px; font-weight: 600; }
+		.section-desc { margin: 0 0 14px; font-size: 13px; color: #646970; }
+		.toggle-field { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+		.toggle-field .label-wrap { flex: 1; min-width: 0; }
+		.toggle-field .toggle-wrap { flex-shrink: 0; }
+		.toggle { position: relative; display: inline-block; width: 48px; height: 26px; }
+		.toggle input { opacity: 0; width: 0; height: 0; }
+		.toggle-track { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #c3c4c7; transition: .2s; border-radius: 26px; }
+		.toggle-thumb { position: absolute; height: 20px; width: 20px; left: 3px; bottom: 3px; background: #fff; transition: .2s; border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,.2); }
+		.toggle input:checked + .toggle-track .toggle-thumb { transform: translateX(22px); }
+		.toggle input:checked + .toggle-track { background: #2271b1; }
+		.toggle-label { font-size: 14px; font-weight: 500; }
+		.pill-list { display: flex; flex-wrap: wrap; gap: 10px; }
+		.pill-list label { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; background: #f6f7f7; border: 1px solid #dcdcde; border-radius: 8px; cursor: pointer; font-size: 13px; transition: .15s; }
+		.pill-list label:hover { border-color: #c3c4c7; }
+		.pill-list label:has(input:checked) { background: #2271b1; border-color: #2271b1; color: #fff; }
+		.pill-list input { margin: 0; }
+		.input-block { margin-top: 12px; }
+		.input-label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 500; }
+		.input-block input { padding: 8px 12px; border: 1px solid #8c8f94; border-radius: 6px; font-size: 14px; width: 110px; }
+		.input-hint { margin-top: 6px; font-size: 12px; color: #646970; }
+		.card-footer { padding: 20px 28px; background: #f9f9f9; border-top: 1px solid #f0f0f1; }
+		.button-primary { background: #2271b1; color: #fff; border: none; padding: 10px 20px; font-size: 14px; border-radius: 6px; cursor: pointer; font-weight: 500; }
+		.button-primary:hover { background: #135e96; }
+	</style>
+</head>
+<body>
+	<div class="wrap">
+		<header class="hero">
+			<h1>Extension name</h1>
+			<p class="hero-sub">Short description of what this extension does. One or two lines so users know what to expect.</p>
+		</header>
+
+		<form method="post" action="">
+			<div class="card">
+				<div class="card-body">
+					<div class="section">
+						<h2>Post types</h2>
+						<p class="section-desc">Choose which content types to include.</p>
+						<div class="pill-list">
+							<label><input type="checkbox" name="pt[]" value="post" checked> Posts</label>
+							<label><input type="checkbox" name="pt[]" value="page" checked> Pages</label>
+							<label><input type="checkbox" name="pt[]" value="cpt"> Custom Post Type</label>
+						</div>
+					</div>
+
+					<div class="section">
+						<h2>Admin UI</h2>
+						<p class="section-desc">Control where this extension appears.</p>
+						<div class="toggle-field">
+							<div class="label-wrap">
+								<span class="toggle-label">Show in list tables</span>
+								<p class="section-desc" style="margin:4px 0 0">Show column in admin list tables.</p>
+							</div>
+							<div class="toggle-wrap">
+								<label class="toggle"><input type="checkbox" checked><span class="toggle-track"><span class="toggle-thumb"></span></span></label>
+							</div>
+						</div>
+						<div class="toggle-field" style="margin-top:16px">
+							<div class="label-wrap">
+								<span class="toggle-label">Dashboard widget</span>
+								<p class="section-desc" style="margin:4px 0 0">Display a widget on the dashboard.</p>
+							</div>
+							<div class="toggle-wrap">
+								<label class="toggle"><input type="checkbox"><span class="toggle-track"><span class="toggle-thumb"></span></span></label>
+							</div>
+						</div>
+					</div>
+
+					<div class="section">
+						<h2>Cache duration</h2>
+						<div class="input-block">
+							<label class="input-label">Seconds</label>
+							<input type="number" name="cache" value="43200" min="0" step="1">
+							<p class="input-hint">Default 43200 (12 hours).</p>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer">
+					<button type="submit" class="button-primary">Save changes</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

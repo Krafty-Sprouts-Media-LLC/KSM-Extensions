@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Demo D – Compact minimal</title>
+	<style>
+		* { box-sizing: border-box; }
+		body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, sans-serif; font-size: 14px; line-height: 1.5; color: #1d2327; background: #fff; margin: 0; padding: 32px; }
+		.wrap { max-width: 640px; margin: 0 auto; }
+		.hero { margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid #e0e0e0; }
+		.hero h1 { margin: 0 0 4px; font-size: 20px; font-weight: 600; }
+		.hero p { margin: 0; color: #646970; font-size: 13px; }
+		.block { margin-bottom: 28px; }
+		.block-title { margin: 0 0 12px; font-size: 12px; font-weight: 600; color: #646970; text-transform: uppercase; letter-spacing: .04em; }
+		.row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; min-height: 44px; border-bottom: 1px solid #f0f0f1; }
+		.row:last-child { border-bottom: none; }
+		.row-label { font-size: 14px; }
+		.row-hint { font-size: 12px; color: #646970; margin-top: 2px; }
+		.toggle { position: relative; width: 40px; height: 22px; flex-shrink: 0; }
+		.toggle input { opacity: 0; width: 0; height: 0; }
+		.toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #dcdcde; transition: .2s; border-radius: 22px; }
+		.toggle-slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background: #fff; transition: .2s; border-radius: 50%; box-shadow: 0 1px 2px rgba(0,0,0,.15); }
+		.toggle input:checked + .toggle-slider { background: #2271b1; }
+		.toggle input:checked + .toggle-slider:before { transform: translateX(18px); }
+		.chk-list { display: flex; flex-wrap: wrap; gap: 6px 20px; }
+		.chk-list label { display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 13px; }
+		.inline-input { display: flex; align-items: center; gap: 8px; }
+		.inline-input input { padding: 6px 10px; border: 1px solid #dcdcde; border-radius: 4px; font-size: 14px; width: 90px; }
+		.inline-input span { font-size: 13px; color: #646970; }
+		.footer { margin-top: 32px; padding-top: 20px; border-top: 1px solid #e0e0e0; }
+		.button-primary { background: #2271b1; color: #fff; border: none; padding: 8px 18px; font-size: 13px; border-radius: 4px; cursor: pointer; font-weight: 500; }
+		.button-primary:hover { background: #135e96; }
+	</style>
+</head>
+<body>
+	<div class="wrap">
+		<div class="hero">
+			<h1>Extension name</h1>
+			<p>Short description of what this extension does. One or two lines.</p>
+		</div>
+
+		<form method="post" action="">
+			<div class="block">
+				<div class="block-title">Post types</div>
+				<div class="chk-list">
+					<label><input type="checkbox" name="pt[]" value="post" checked> Posts</label>
+					<label><input type="checkbox" name="pt[]" value="page" checked> Pages</label>
+					<label><input type="checkbox" name="pt[]" value="cpt"> Custom Post Type</label>
+				</div>
+			</div>
+
+			<div class="block">
+				<div class="block-title">Display</div>
+				<div class="row">
+					<div class="row-label">Show in list tables</div>
+					<label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+				</div>
+				<div class="row">
+					<div class="row-label">Dashboard widget</div>
+					<label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label>
+				</div>
+			</div>
+
+			<div class="block">
+				<div class="block-title">Cache</div>
+				<div class="row">
+					<div>
+						<div class="row-label">Duration</div>
+						<div class="row-hint">Seconds. Default 43200 (12h).</div>
+					</div>
+					<div class="inline-input">
+						<input type="number" name="cache" value="43200" min="0" step="1">
+						<span>sec</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="footer">
+				<button type="submit" class="button-primary">Save changes</button>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

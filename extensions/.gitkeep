@@ -1,0 +1,4 @@
+# Modules Directory
+
+Place your module plugins in this directory. Each module should be in its own subdirectory with a main PHP file.
+

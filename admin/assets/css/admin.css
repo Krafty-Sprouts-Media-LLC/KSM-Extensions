@@ -1,0 +1,92 @@
+/**
+ * KSM Extensions Admin Styles
+ *
+ * @package KSM_Extensions
+ * @since 1.0.0
+ */
+
+.ksm-extensions-modules {
+	margin-top: 20px;
+}
+
+.ksm-extensions-modules table {
+	margin-top: 15px;
+}
+
+.ksm-extensions-modules td {
+	vertical-align: middle;
+}
+
+.ksm-extensions-modules tr.inactive {
+	opacity: 0.6;
+}
+
+.wrap h1 {
+	margin-bottom: 10px;
+}
+
+.wrap > p {
+	margin-bottom: 20px;
+	font-size: 14px;
+	color: #646970;
+}
+
+/* Module Toggle Switch */
+.ksm-module-toggle {
+	position: relative;
+	display: inline-block;
+	width: 50px;
+	height: 24px;
+}
+
+.ksm-module-toggle-input {
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+.ksm-module-toggle-slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #ccc;
+	transition: .4s;
+	border-radius: 24px;
+}
+
+.ksm-module-toggle-slider:before {
+	position: absolute;
+	content: "";
+	height: 18px;
+	width: 18px;
+	left: 3px;
+	bottom: 3px;
+	background-color: white;
+	transition: .4s;
+	border-radius: 50%;
+}
+
+.ksm-module-toggle-input:checked + .ksm-module-toggle-slider {
+	background-color: #2271b1;
+}
+
+.ksm-module-toggle-input:checked + .ksm-module-toggle-slider:before {
+	transform: translateX(26px);
+}
+
+.ksm-module-toggle-input:disabled + .ksm-module-toggle-slider {
+	opacity: 0.6;
+	cursor: not-allowed;
+}
+
+/* Dashboard Widget */
+.ksm-extensions-dashboard-widget p {
+	margin: 10px 0;
+}
+
+.ksm-extensions-dashboard-widget .button {
+	margin-right: 5px;
+}
