@@ -20,6 +20,14 @@ Each feature deserves its own version number
 
 
 
+## [2.0.14] - 12/04/2026
+
+### Changed
+- **Built-in GitHub updates (plugin-update-checker)**: `KSM_EXTENSIONS_UPDATE_REPO` now defaults to the public repository URL so the bundled updater runs on every site without adding constants to `wp-config.php`. Set `KSM_EXTENSIONS_UPDATE_REPO` to an empty string in `wp-config.php` to disable remote checks, or to another URL for forks.
+
+### Technical Details
+- `ksm-extensions.php`: default `KSM_EXTENSIONS_UPDATE_REPO` is `https://github.com/Krafty-Sprouts-Media-LLC/KSM-Extensions`.
+
 ## [2.0.13] - 12/04/2026
 
 ### Fixed

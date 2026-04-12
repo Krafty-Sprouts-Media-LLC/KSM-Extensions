@@ -3,7 +3,7 @@
  * Plugin Name: KSM Extensions
  * Plugin URI: https://kraftysprouts.com
  * Description: A comprehensive WordPress extension framework by Krafty Sprouts Media, LLC that houses modular plugins and core extensions for enhanced WordPress functionality.
- * Version: 2.0.13
+ * Version: 2.0.14
  * Author: Krafty Sprouts Media, LLC
  * Author URI: https://kraftysprouts.com
  * License: GPL v2 or later
@@ -28,7 +28,7 @@ if (!defined('ABSPATH')) {
  *
  * @since 1.0.0
  */
-define( 'KSM_EXTENSIONS_VERSION', '2.0.13' );
+define( 'KSM_EXTENSIONS_VERSION', '2.0.14' );
 
 /**
  * Plugin directory path.
@@ -59,13 +59,18 @@ define('KSM_EXTENSIONS_PLUGIN_BASENAME', plugin_basename(__FILE__));
 define('KSM_EXTENSIONS_PLUGIN_FILE', __FILE__);
 
 /**
- * Optional: update source for plugin-update-checker (GitHub repo URL or JSON metadata URL).
- * Define in wp-config.php: define( 'KSM_EXTENSIONS_UPDATE_REPO', 'https://github.com/username/ksm-extensions' );
+ * Update source for plugin-update-checker (GitHub repository URL).
+ *
+ * Defaults to the public Krafty Sprouts GitHub repo so updates work without editing wp-config,
+ * like typical third-party plugins that ship a built-in update URL.
+ *
+ * Override in wp-config.php before this file loads: use another repo URL, or set to '' to
+ * disable remote update checks entirely.
  *
  * @since 2.0.6
  */
 if ( ! defined( 'KSM_EXTENSIONS_UPDATE_REPO' ) ) {
-	define( 'KSM_EXTENSIONS_UPDATE_REPO', '' );
+	define( 'KSM_EXTENSIONS_UPDATE_REPO', 'https://github.com/Krafty-Sprouts-Media-LLC/KSM-Extensions' );
 }
 
 /**
