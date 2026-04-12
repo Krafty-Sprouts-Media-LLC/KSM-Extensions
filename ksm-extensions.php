@@ -3,7 +3,7 @@
  * Plugin Name: KSM Extensions
  * Plugin URI: https://kraftysprouts.com
  * Description: A comprehensive WordPress extension framework by Krafty Sprouts Media, LLC that houses modular plugins and core extensions for enhanced WordPress functionality.
- * Version: 2.0.11
+ * Version: 2.0.13
  * Author: Krafty Sprouts Media, LLC
  * Author URI: https://kraftysprouts.com
  * License: GPL v2 or later
@@ -28,7 +28,7 @@ if (!defined('ABSPATH')) {
  *
  * @since 1.0.0
  */
-define( 'KSM_EXTENSIONS_VERSION', '2.0.11' );
+define( 'KSM_EXTENSIONS_VERSION', '2.0.13' );
 
 /**
  * Plugin directory path.

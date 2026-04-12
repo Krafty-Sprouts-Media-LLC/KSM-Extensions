@@ -13,8 +13,8 @@
  * Filename: class-ksm-extensions-admin.php
  * Author: Krafty Sprouts Media, LLC
  * Created: 30/12/2025
- * Version: 1.0.3
- * Last Modified: 30/12/2025
+ * Version: 1.0.4
+ * Last Modified: 12/04/2026
  * Description: Admin interface and menu management.
  */
 
@@ -374,12 +374,19 @@ class KSM_Extensions_Admin
      * Get the full URL for a module's settings or admin page.
      * Duplicate Finder lives under Media (upload.php); others under Settings (options-general.php).
      *
+     * Only returns a URL when the module is activated. Inactive modules do not register their
+     * settings screen; linking there would hit an unregistered page and trigger a permissions error.
+     *
      * @since 1.0.13
      * @param string $module_slug The module slug.
-     * @return string|false The full admin URL or false if no settings page.
+     * @return string|false The full admin URL or false if no settings page or module inactive.
      */
     private function get_module_settings_url($module_slug)
     {
+        if (!$this->module_loader || !$this->module_loader->is_module_activated($module_slug)) {
+            return false;
+        }
+
         $slug = $this->get_module_settings_slug($module_slug);
         if (!$slug) {
             return false;

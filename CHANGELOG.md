@@ -20,6 +20,22 @@ Each feature deserves its own version number
 
 
 
+## [2.0.13] - 12/04/2026
+
+### Fixed
+- **Modules page – Settings link for inactive modules**: The row is styled as inactive (faded), but the Settings link was still shown and pointed at `options-general.php?page=…` or Media Library `page=` URLs that are only registered when the module is active. Visiting them caused “Sorry, you are not allowed to access this page.” Settings links now appear only when the module is toggled on.
+
+### Technical Details
+- `includes/class-ksm-extensions-admin.php`: `get_module_settings_url()` returns false unless `is_module_activated( $module_slug )`.
+
+## [2.0.12] - 12/04/2026
+
+### Added
+- **Featured Image Manager – RSS 2.0 media enclosure**: Optional `<enclosure>` output on `rss2_item` for the same featured or fallback image used in feeds (correct MIME type from the file when local, byte length when the sized file exists). New setting: “Add RSS 2.0 media enclosure (url, length, MIME type) for the feed image” (defaults on; requires “Include featured images in RSS feeds”).
+
+### Technical Details
+- `extensions/featured-image-manager/includes/class-featured-image-manager.php`: `rss2_item` action `maybe_output_rss_item_enclosure()`, `get_local_path_for_image_size()`; options `feed_include_enclosure` and sanitization. New methods documented with `@since 2.0.12`.
+
 ## [2.0.11] - 19/02/2026
 
 ### Added

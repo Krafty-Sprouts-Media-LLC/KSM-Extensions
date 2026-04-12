@@ -3,8 +3,8 @@
  * Filename: class-featured-image-manager.php
  * Author: Krafty Sprouts Media, LLC
  * Created: 14/11/2025
- * Version: 2.1.6
- * Last Modified: 20/11/2025
+ * Version: 2.1.7
+ * Last Modified: 12/04/2026
  * Description: Featured image utilities for admin thumbnails, RSS injection, and fallback handling.
  *
  * Credits:
@@ -136,6 +136,7 @@ class KSM_Extensions_FeaturedImageManager {
 
 		add_filter( 'the_content_feed', array( $this, 'inject_featured_image_into_feed' ), 10 );
 		add_filter( 'the_excerpt_rss', array( $this, 'inject_featured_image_into_feed' ), 10 );
+		add_action( 'rss2_item', array( $this, 'maybe_output_rss_item_enclosure' ), 10 );
 		add_filter( 'default_post_metadata', array( $this, 'supply_fallback_thumbnail_meta' ), 10, 5 );
 		add_filter( 'post_thumbnail_html', array( $this, 'maybe_render_fallback_thumbnail_html' ), 10, 5 );
 		add_action( 'wp_ajax_ksm_extensions_set_featured_image', array( $this, 'handle_set_featured_image_request' ) );
@@ -179,10 +180,11 @@ class KSM_Extensions_FeaturedImageManager {
 			'admin_column_size'  => 'thumbnail',
 			'fallback_image_id'  => 0,
 			'fallback_image_url' => '',
-			'auto_assign'        => true,
-			'feed_enabled'       => true,
-			'feed_image_size'    => 'full',
-			'feed_caption_field' => 'caption',
+			'auto_assign'            => true,
+			'feed_enabled'           => true,
+			'feed_include_enclosure' => true,
+			'feed_image_size'        => 'full',
+			'feed_caption_field'     => 'caption',
 		);
 	}
 
@@ -505,6 +507,16 @@ class KSM_Extensions_FeaturedImageManager {
 										/>
 										<span class="ksm-checkbox-row__label"><?php esc_html_e( 'Include featured images in RSS feeds', 'ksm-extensions' ); ?></span>
 									</label>
+									<label class="ksm-checkbox-row" for="ksm-featured-feed-enclosure">
+										<input
+											type="checkbox"
+											id="ksm-featured-feed-enclosure"
+											name="<?php echo esc_attr( self::OPTION_KEY ); ?>[feed_include_enclosure]"
+											value="1"
+											<?php checked( $options['feed_include_enclosure'] ); ?>
+										/>
+										<span class="ksm-checkbox-row__label"><?php esc_html_e( 'Add RSS 2.0 media enclosure (url, length, MIME type) for the feed image', 'ksm-extensions' ); ?></span>
+									</label>
 									<label>
 										<span class="ksm-input-label"><?php esc_html_e( 'Image size', 'ksm-extensions' ); ?></span>
 										<select name="<?php echo esc_attr( self::OPTION_KEY ); ?>[feed_image_size]">
@@ -554,6 +566,7 @@ class KSM_Extensions_FeaturedImageManager {
 			'admin_column',
 			'auto_assign',
 			'feed_enabled',
+			'feed_include_enclosure',
 		);
 
 		foreach ( $boolean_keys as $key ) {
@@ -1035,6 +1048,98 @@ class KSM_Extensions_FeaturedImageManager {
 
 		// Always place featured image before content (standard RSS feed behavior)
 		return $image_html . $content;
+	}
+
+	/**
+	 * Output an RSS 2.0 enclosure for the same image used in feed content (featured or fallback).
+	 *
+	 * @since 2.0.12
+	 *
+	 * @return void
+	 */
+	public function maybe_output_rss_item_enclosure() {
+		if ( empty( $this->options['enabled'] ) || empty( $this->options['feed_enabled'] ) || empty( $this->options['feed_include_enclosure'] ) ) {
+			return;
+		}
+
+		global $post;
+
+		if ( ! $post || ! in_array( $post->post_type, $this->options['post_types'], true ) ) {
+			return;
+		}
+
+		$size       = $this->options['feed_image_size'] ? $this->options['feed_image_size'] : 'full';
+		$image_data = $this->get_image_for_post( $post->ID, $size );
+
+		if ( ! $image_data || empty( $image_data['url'] ) ) {
+			return;
+		}
+
+		$url    = $image_data['url'];
+		$length = 0;
+		$mime   = '';
+
+		if ( ! empty( $image_data['id'] ) ) {
+			$file = $this->get_local_path_for_image_size( (int) $image_data['id'], $size );
+			if ( $file && file_exists( $file ) && is_readable( $file ) ) {
+				$length = (int) filesize( $file );
+				$ft     = wp_check_filetype( basename( $file ) );
+				if ( ! empty( $ft['type'] ) ) {
+					$mime = $ft['type'];
+				}
+			}
+
+			if ( '' === $mime ) {
+				$mime = (string) get_post_mime_type( $image_data['id'] );
+			}
+		} else {
+			$path = wp_parse_url( $url, PHP_URL_PATH );
+			$ft   = wp_check_filetype( basename( (string) $path ) );
+			if ( ! empty( $ft['type'] ) ) {
+				$mime = $ft['type'];
+			}
+		}
+
+		if ( '' === $mime ) {
+			$mime = 'application/octet-stream';
+		}
+
+		printf(
+			"<enclosure url=\"%s\" length=\"%d\" type=\"%s\" />\n",
+			esc_attr( esc_url( $url ) ),
+			$length,
+			esc_attr( $mime )
+		);
+	}
+
+	/**
+	 * Resolve the local filesystem path for an attachment image size.
+	 *
+	 * @since 2.0.12
+	 *
+	 * @param int    $attachment_id Attachment ID.
+	 * @param string $size Registered image size slug.
+	 * @return string|false Absolute path, or false if unavailable.
+	 */
+	private function get_local_path_for_image_size( $attachment_id, $size ) {
+		$file = get_attached_file( $attachment_id );
+		if ( ! $file ) {
+			return false;
+		}
+
+		if ( 'full' === $size || '' === $size ) {
+			return $file;
+		}
+
+		$meta = wp_get_attachment_metadata( $attachment_id );
+		if ( ! empty( $meta['sizes'][ $size ]['file'] ) ) {
+			$sized = path_join( dirname( $file ), $meta['sizes'][ $size ]['file'] );
+			if ( file_exists( $sized ) ) {
+				return $sized;
+			}
+		}
+
+		return $file;
 	}
 
 	/**
