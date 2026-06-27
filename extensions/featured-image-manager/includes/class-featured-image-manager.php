@@ -340,7 +340,7 @@ class KSM_Extensions_FeaturedImageManager {
 
 		wp_localize_script(
 			'ksm-featured-thumb-admin',
-			'KSM ExtensionsFeaturedThumbs',
+			'ksmExtensionsFeaturedThumbs',
 			array(
 				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
 				'l10n'    => array(
@@ -851,12 +851,15 @@ class KSM_Extensions_FeaturedImageManager {
 				display: flex;
 				justify-content: center;
 				align-items: center;
+				gap: 6px;
 				opacity: 0;
 				transition: opacity 0.2s ease;
+				pointer-events: none;
 			}
 			.ksm-thumb-preview:hover .ksm-thumb-overlay,
 			.ksm-thumb-preview:focus-within .ksm-thumb-overlay {
 				opacity: 1;
+				pointer-events: auto;
 			}
 			.ksm-icon-button {
 				border: none;

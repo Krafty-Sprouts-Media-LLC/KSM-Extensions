@@ -20,6 +20,15 @@ Each feature deserves its own version number
 
 
 
+## [2.0.15] - 27/06/2026
+
+### Fixed
+- **Featured Image Manager – admin column edit/delete icons**: The post list thumbnail overlay showed edit and remove controls but clicks did nothing because `assets/js/admin-featured-thumbs.js` was never committed and `wp_localize_script` used an invalid JS object name (`KSM ExtensionsFeaturedThumbs`). Added the missing script and localized settings as `ksmExtensionsFeaturedThumbs`.
+
+### Technical Details
+- `assets/js/admin-featured-thumbs.js`: media modal for set/change, confirm + AJAX for remove, spinner while saving.
+- `extensions/featured-image-manager/includes/class-featured-image-manager.php`: fix localize object name; overlay `pointer-events` so hidden overlay does not block thumbnail clicks.
+
 ## [2.0.14] - 12/04/2026
 
 ### Changed
