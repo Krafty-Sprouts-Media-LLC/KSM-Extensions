@@ -20,6 +20,15 @@ Each feature deserves its own version number
 
 
 
+## [2.0.16] - 07/01/2026
+
+### Fixed
+- **GitHub update checker fatal error on wp-cron**: Remote update checks crashed with `Class "Parsedown" not found` because the bundled `plugin-update-checker` library was missing its `vendor/` dependencies (`Parsedown.php`, `ParsedownModern.php`, `PucReadmeParser.php`). Restored the upstream v5.6 vendor files.
+
+### Technical Details
+- `lib/plugin-update-checker/vendor/`: add Parsedown and PucReadmeParser from YahnisElsts/plugin-update-checker v5.6.
+- `.gitignore`: allow `lib/plugin-update-checker/vendor/` (root `vendor/` ignore had excluded bundled PUC dependencies).
+
 ## [2.0.15] - 27/06/2026
 
 ### Fixed
