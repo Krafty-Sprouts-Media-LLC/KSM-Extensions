@@ -20,6 +20,17 @@ Each feature deserves its own version number
 
 
 
+## [2.0.17] - 07/01/2026
+
+### Fixed
+- **GitHub auto-updates**: Release zips were named `schedulely-{version}.zip` with plugin files at the archive root instead of inside `ksm-extensions/`, so WordPress could not install updates from GitHub releases. The release workflow now builds `ksm-extensions.zip` (folder inside remains `ksm-extensions/`) with the correct layout.
+- **Update checker download source**: Prefer GitHub release `.zip` assets over the generic source zipball so one-click updates use the packaged plugin build.
+
+### Technical Details
+- `.github/workflows/release.yml`: rsync into `build/ksm-extensions/`, zip with correct prefix, exclude dev-only paths.
+- `ksm-extensions.php`: call `enableReleaseAssets()` on the PUC VCS API.
+- `.gitignore`: ignore local `dist/` build output.
+
 ## [2.0.16] - 07/01/2026
 
 ### Fixed

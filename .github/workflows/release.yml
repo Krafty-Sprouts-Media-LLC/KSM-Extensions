@@ -41,19 +41,31 @@ jobs:
         id: create_zip
         run: |
           VERSION="${{ steps.tag_version.outputs.VERSION }}"
-          ZIP_NAME="schedulely-${VERSION}.zip"
-          
-          # Create zip file excluding git files and other unnecessary files
-          zip -r "${ZIP_NAME}" . \
-            -x "*.git*" \
-            -x "*.github*" \
-            -x "*.DS_Store" \
-            -x "*node_modules*" \
-            -x "*.zip" \
-            -x "*composer.lock" \
-            -x "*package-lock.json" \
-            -x "*yarn.lock"
-          
+          ZIP_NAME="ksm-extensions.zip"
+          BUILD_DIR="build/ksm-extensions"
+
+          mkdir -p "${BUILD_DIR}"
+          rsync -a ./ "${BUILD_DIR}/" \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude '.wp-ai' \
+            --exclude '.agent-skills' \
+            --exclude 'node_modules' \
+            --exclude 'demos' \
+            --exclude 'dist' \
+            --exclude 'tests' \
+            --exclude 'agents.md' \
+            --exclude 'development.md' \
+            --exclude 'BUILD-SUMMARY.md' \
+            --exclude 'PLUGIN-SAFETY-ANALYSIS.md' \
+            --exclude 'AUDIT-REPORT*.md' \
+            --exclude 'audit-*.md' \
+            --exclude 'fix-*.php' \
+            --exclude '.gitignore' \
+            --exclude '*.zip'
+
+          (cd build && zip -r "../${ZIP_NAME}" ksm-extensions)
+
           echo "ZIP_NAME=${ZIP_NAME}" >> $GITHUB_OUTPUT
           echo "ZIP_PATH=${ZIP_NAME}" >> $GITHUB_OUTPUT
       
