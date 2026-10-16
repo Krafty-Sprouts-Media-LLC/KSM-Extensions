@@ -76,6 +76,9 @@ class KSM_Extensions_FeaturedImageManager {
 			case 'trash':
 				$filename = 'trash.svg';
 				break;
+			case 'add':
+				$filename = 'add.svg';
+				break;
 			case 'edit':
 			default:
 				$filename = 'edit.svg';
@@ -90,6 +93,10 @@ class KSM_Extensions_FeaturedImageManager {
 		// Fallback icons when SVG files are not present in assets/icons.
 		if ( 'trash' === $icon ) {
 			return '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v9h-2V9zm4 0h2v9h-2V9zM7 9h2v9H7V9z"/></svg>';
+		}
+
+		if ( 'add' === $icon ) {
+			return '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>';
 		}
 
 		return '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm14.71-9.04a1.003 1.003 0 000-1.42l-2.5-2.5a1.003 1.003 0 00-1.42 0l-1.83 1.83 3.75 3.75 2-1.66z"/></svg>';
@@ -180,7 +187,7 @@ class KSM_Extensions_FeaturedImageManager {
 			'admin_column_size'  => 'thumbnail',
 			'fallback_image_id'  => 0,
 			'fallback_image_url' => '',
-			'auto_assign'            => true,
+			'auto_assign'            => false,
 			'feed_enabled'           => true,
 			'feed_include_enclosure' => true,
 			'feed_image_size'        => 'full',
@@ -484,8 +491,12 @@ class KSM_Extensions_FeaturedImageManager {
 											value="1"
 											<?php checked( $options['auto_assign'] ); ?>
 										/>
-										<span class="ksm-checkbox-row__label"><?php esc_html_e( 'Automatically apply fallback when no featured image exists', 'ksm-extensions' ); ?></span>
+										<span class="ksm-checkbox-row__label"><?php esc_html_e( 'Save the fallback image into posts that have no featured image', 'ksm-extensions' ); ?></span>
 									</label>
+									<p class="ksm-field__description">
+										<strong><?php esc_html_e( 'Off by default.', 'ksm-extensions' ); ?></strong>
+										<?php esc_html_e( 'The fallback image already displays on your site\'s frontend without this option. Turning this on saves the fallback as a real featured image whenever a post without one is saved, so it will also appear in the admin and cannot be told apart from an image you chose. Leave it off unless you want that.', 'ksm-extensions' ); ?>
+									</p>
 								</div>
 							</section>
 
@@ -705,16 +716,9 @@ class KSM_Extensions_FeaturedImageManager {
 		$attachment_id = $has_thumbnail ? (int) get_post_thumbnail_id( $post_id ) : 0;
 		$preview       = '';
 
+		// Admin shows the real featured image only; posts without one keep the empty placeholder.
 		if ( $has_thumbnail ) {
 			$preview = wp_get_attachment_image( get_post_thumbnail_id( $post_id ), $size );
-		} else {
-			$fallback_preview = $this->get_image_for_post( $post_id, $size );
-			if ( $fallback_preview ) {
-				$preview = sprintf(
-					'<img src="%s" alt="" style="max-width:80px;height:auto;" />',
-					esc_url( $fallback_preview['url'] )
-				);
-			}
 		}
 
 		if ( empty( $preview ) ) {
@@ -736,7 +740,7 @@ class KSM_Extensions_FeaturedImageManager {
 						aria-label="<?php echo esc_attr( $has_thumbnail ? __( 'Change featured image', 'ksm-extensions' ) : __( 'Set featured image', 'ksm-extensions' ) ); ?>"
 					>
 						<span class="screen-reader-text"><?php echo esc_html( $has_thumbnail ? __( 'Change featured image', 'ksm-extensions' ) : __( 'Set featured image', 'ksm-extensions' ) ); ?></span>
-						<?php echo $this->get_thumb_action_icon( 'edit' ); ?>
+						<?php echo $this->get_thumb_action_icon( $has_thumbnail ? 'edit' : 'add' ); ?>
 					</button>
 					<?php if ( $has_thumbnail ) : ?>
 						<button
@@ -962,6 +966,11 @@ class KSM_Extensions_FeaturedImageManager {
 			return $value;
 		}
 
+		// The fallback is a frontend-only convenience; admin screens must see the real state.
+		if ( $this->is_backend_request() ) {
+			return $value;
+		}
+
 		if ( empty( $this->options['enabled'] ) || empty( $this->options['fallback_image_id'] ) ) {
 			return $value;
 		}
@@ -986,6 +995,29 @@ class KSM_Extensions_FeaturedImageManager {
 	}
 
 	/**
+	 * Whether the current request serves the admin side (screens, editor, admin-initiated AJAX).
+	 *
+	 * `is_admin()` alone is not enough: the block editor loads the featured image over REST
+	 * (where it is false), and frontend load-more requests hit admin-ajax.php (where it is true).
+	 *
+	 * @return bool
+	 */
+	private function is_backend_request() {
+		if ( wp_doing_ajax() ) {
+			$referer = wp_get_referer();
+			return $referer && 0 === strpos( $referer, admin_url() );
+		}
+
+		if ( is_admin() ) {
+			return true;
+		}
+
+		// The block editor talks to the REST API as a user who can edit posts. Anonymous and
+		// read-only REST consumers (headless frontends) keep receiving the fallback.
+		return defined( 'REST_REQUEST' ) && REST_REQUEST && current_user_can( 'edit_posts' );
+	}
+
+	/**
 	 * Ensure fallback HTML renders when needed.
 	 *
 	 * @param string       $html Existing HTML.
@@ -997,6 +1029,10 @@ class KSM_Extensions_FeaturedImageManager {
 	 */
 	public function maybe_render_fallback_thumbnail_html( $html, $post_id, $post_thumbnail_id, $size, $attr ) {
 		if ( $html ) {
+			return $html;
+		}
+
+		if ( $this->is_backend_request() ) {
 			return $html;
 		}
 

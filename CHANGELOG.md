@@ -20,6 +20,16 @@ Each feature deserves its own version number
 
 
 
+## [2.0.18] - 16/10/2026
+
+### Fixed
+- **Featured Image Manager fallback no longer shows in the admin**: The default fallback image was injected into every `_thumbnail_id` lookup, so posts with no featured image appeared to have one in the posts list column, the block editor and other admin-side plugins. The fallback now applies to the frontend only (themes, feeds, SEO/OG output). Admin screens, admin-initiated AJAX and editor REST requests see the real featured image state, and posts without one stay empty until an image is set.
+- **Admin thumbnail column**: Posts without a real featured image now show the empty placeholder instead of a preview of the fallback image, and the hover action is an "add" (+) icon labelled "Set featured image" instead of the pencil used for replacing.
+
+### Technical Details
+- `class-featured-image-manager.php`: added `is_backend_request()` (covers `is_admin()`, admin-referred AJAX and REST requests from users who can edit posts) and used it to skip `supply_fallback_thumbnail_meta()` and `maybe_render_fallback_thumbnail_html()` in the backend.
+- `auto_assign` ("Save the fallback image into posts that have no featured image") now defaults to off and has a notice explaining that it stores the fallback as a real featured image, visible in the admin. Sites that already saved this setting as enabled keep it until it is unticked.
+
 ## [2.0.17] - 07/01/2026
 
 ### Fixed

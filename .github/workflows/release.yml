@@ -66,6 +66,16 @@ jobs:
 
           (cd build && zip -r "../${ZIP_NAME}" ksm-extensions)
 
+          # Fail if the archive would install as ksm-extensions/ksm-extensions/.
+          if zipinfo -1 "${ZIP_NAME}" | grep -q '^ksm-extensions/ksm-extensions/'; then
+            echo "ERROR: nested ksm-extensions/ksm-extensions/ folder in zip"
+            exit 1
+          fi
+          if ! zipinfo -1 "${ZIP_NAME}" | grep -qx 'ksm-extensions/ksm-extensions.php'; then
+            echo "ERROR: ksm-extensions/ksm-extensions.php missing from zip"
+            exit 1
+          fi
+
           echo "ZIP_NAME=${ZIP_NAME}" >> $GITHUB_OUTPUT
           echo "ZIP_PATH=${ZIP_NAME}" >> $GITHUB_OUTPUT
       
