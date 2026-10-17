@@ -20,6 +20,14 @@ Each feature deserves its own version number
 
 
 
+## [2.0.20] - 17/10/2026
+
+### Improved
+- **Admin thumbnail column placeholder**: Posts without a real featured image now show a dashed, crossed-out picture icon (inline SVG) instead of a "—", so an empty slot cannot be mistaken for a real image. The hover "+" (Set featured image) action is unchanged.
+
+### Technical Details
+- `class-featured-image-manager.php`: added `get_empty_thumb_placeholder()`, an `ksm-thumb-preview--empty` modifier class, and matching styles in `print_admin_column_styles()`.
+
 ## [2.0.19] - 17/10/2026
 
 ### Improved

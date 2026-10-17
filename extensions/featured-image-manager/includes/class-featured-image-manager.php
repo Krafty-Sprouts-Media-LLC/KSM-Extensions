@@ -704,6 +704,17 @@ class KSM_Extensions_FeaturedImageManager {
 	}
 
 	/**
+	 * Placeholder shown in the admin column when a post has no real featured image.
+	 *
+	 * A dashed, crossed-out picture icon so it cannot be mistaken for an actual image.
+	 *
+	 * @return string
+	 */
+	private function get_empty_thumb_placeholder() {
+		return '<span class="ksm-thumb-placeholder" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80" focusable="false"><rect x="1" y="1" width="78" height="78" rx="6" fill="#f6f7f7" stroke="#a7aaad" stroke-width="2" stroke-dasharray="5 4"/><g fill="none" stroke="#a7aaad" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="22" y="26" width="36" height="28" rx="3"/><circle cx="32" cy="35" r="3"/><path d="M22 50l10-9 8 7 6-5 12 9"/><path d="M18 62L62 18"/></g></svg></span>';
+	}
+
+	/**
 	 * Build the thumbnail column markup.
 	 *
 	 * @param int $post_id Post ID.
@@ -721,16 +732,14 @@ class KSM_Extensions_FeaturedImageManager {
 			$preview = wp_get_attachment_image( get_post_thumbnail_id( $post_id ), $size );
 		}
 
-		if ( empty( $preview ) ) {
-			$preview = '<span class="ksm-thumb-placeholder">&mdash;</span>';
-		}
+		$is_empty = empty( $preview );
 
 		ob_start();
 		?>
 		<div class="ksm-thumb-cell" data-ksm-thumb="<?php echo esc_attr( $post_id ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>" data-attachment-id="<?php echo esc_attr( $attachment_id ); ?>">
-			<div class="ksm-thumb-preview">
+			<div class="ksm-thumb-preview<?php echo $is_empty ? ' ksm-thumb-preview--empty' : ''; ?>">
 				<button type="button" class="ksm-thumb-preview-button ksm-featured-image-toggle" data-post-id="<?php echo esc_attr( $post_id ); ?>" aria-label="<?php echo esc_attr( sprintf( _x( 'Set featured image for “%s”', 'KSM Extensions admin thumb', 'ksm-extensions' ), get_the_title( $post_id ) ) ); ?>">
-					<?php echo wp_kses_post( $preview ); ?>
+					<?php echo $is_empty ? $this->get_empty_thumb_placeholder() : wp_kses_post( $preview ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static markup. ?>
 				</button>
 				<div class="ksm-thumb-overlay" role="group" aria-label="<?php esc_attr_e( 'Featured image actions', 'ksm-extensions' ); ?>">
 					<button
@@ -912,8 +921,20 @@ class KSM_Extensions_FeaturedImageManager {
 				float: none;
 				margin-top: 4px;
 			}
+			.ksm-thumb-preview--empty {
+				width: auto;
+			}
 			.ksm-thumb-placeholder {
-				color: #757575;
+				display: block;
+				line-height: 0;
+			}
+			.ksm-thumb-placeholder svg {
+				display: block;
+				width: 80px;
+				height: 80px;
+			}
+			.ksm-thumb-preview--empty .ksm-thumb-overlay {
+				background: rgba(255, 255, 255, 0.7);
 			}
 		</style>
 		<?php
