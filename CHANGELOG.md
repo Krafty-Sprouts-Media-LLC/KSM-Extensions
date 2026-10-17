@@ -20,6 +20,14 @@ Each feature deserves its own version number
 
 
 
+## [2.0.19] - 17/10/2026
+
+### Improved
+- **Admin thumbnail column tooltips**: The hover action buttons (set/change and remove featured image) now show a native tooltip, so the + icon is labelled "Set featured image" instead of being icon-only.
+
+### Technical Details
+- `class-featured-image-manager.php`: added `title` attributes to the overlay buttons in `get_thumbnail_column_markup()`.
+
 ## [2.0.18] - 16/10/2026
 
 ### Fixed

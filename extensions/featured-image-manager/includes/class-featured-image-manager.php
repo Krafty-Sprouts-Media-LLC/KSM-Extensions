@@ -737,7 +737,8 @@ class KSM_Extensions_FeaturedImageManager {
 						type="button"
 						class="ksm-icon-button ksm-featured-image-toggle"
 						data-post-id="<?php echo esc_attr( $post_id ); ?>"
-						aria-label="<?php echo esc_attr( $has_thumbnail ? __( 'Change featured image', 'ksm-extensions' ) : __( 'Set featured image', 'ksm-extensions' ) ); ?>"
+						title="<?php echo esc_attr( $has_thumbnail ? __( 'Change featured image', 'ksm-extensions' ) : __( 'Set featured image', 'ksm-extensions' ) ); ?>"
+							aria-label="<?php echo esc_attr( $has_thumbnail ? __( 'Change featured image', 'ksm-extensions' ) : __( 'Set featured image', 'ksm-extensions' ) ); ?>"
 					>
 						<span class="screen-reader-text"><?php echo esc_html( $has_thumbnail ? __( 'Change featured image', 'ksm-extensions' ) : __( 'Set featured image', 'ksm-extensions' ) ); ?></span>
 						<?php echo $this->get_thumb_action_icon( $has_thumbnail ? 'edit' : 'add' ); ?>
@@ -747,7 +748,8 @@ class KSM_Extensions_FeaturedImageManager {
 							type="button"
 							class="ksm-icon-button ksm-featured-image-remove"
 							data-post-id="<?php echo esc_attr( $post_id ); ?>"
-							aria-label="<?php echo esc_attr__( 'Remove featured image', 'ksm-extensions' ); ?>"
+							title="<?php echo esc_attr__( 'Remove featured image', 'ksm-extensions' ); ?>"
+								aria-label="<?php echo esc_attr__( 'Remove featured image', 'ksm-extensions' ); ?>"
 						>
 							<span class="screen-reader-text"><?php esc_html_e( 'Remove featured image', 'ksm-extensions' ); ?></span>
 							<?php echo $this->get_thumb_action_icon( 'trash' ); ?>
