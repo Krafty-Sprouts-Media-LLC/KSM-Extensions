@@ -462,7 +462,7 @@ class KSM_Extensions_FeaturedImageManager {
 									</div>
 									<div class="ksm-fallback-preview">
 										<?php if ( ! empty( $options['fallback_image_url'] ) ) : ?>
-											<img id="ksm-fallback-preview" src="<?php echo esc_url( $options['fallback_image_url'] ); ?>" alt="" />
+											<img id="ksm-fallback-preview" src="<?php echo esc_url( wp_get_attachment_image_url( (int) $options['fallback_image_id'], 'thumbnail' ) ?: $options['fallback_image_url'] ); ?>" alt="" />
 										<?php else : ?>
 											<img id="ksm-fallback-preview" src="" alt="" style="display:none;" />
 										<?php endif; ?>
@@ -722,14 +722,19 @@ class KSM_Extensions_FeaturedImageManager {
 	 */
 	private function get_thumbnail_column_markup( $post_id ) {
 		$size          = $this->options['admin_column_size'] ?: 'thumbnail';
-		$has_thumbnail = has_post_thumbnail( $post_id );
 		$nonce         = wp_create_nonce( 'ksm_extensions_set_featured_image_' . $post_id );
-		$attachment_id = $has_thumbnail ? (int) get_post_thumbnail_id( $post_id ) : 0;
+		$attachment_id = (int) get_post_thumbnail_id( $post_id );
 		$preview       = '';
 
-		// Admin shows the real featured image only; posts without one keep the empty placeholder.
+		// A saved fallback image is not a chosen featured image, so it shows as empty too.
+		if ( $attachment_id && $attachment_id === (int) $this->options['fallback_image_id'] ) {
+			$attachment_id = 0;
+		}
+
+		$has_thumbnail = $attachment_id > 0;
+
 		if ( $has_thumbnail ) {
-			$preview = wp_get_attachment_image( get_post_thumbnail_id( $post_id ), $size );
+			$preview = wp_get_attachment_image( $attachment_id, $size );
 		}
 
 		$is_empty = empty( $preview );

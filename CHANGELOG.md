@@ -20,6 +20,17 @@ Each feature deserves its own version number
 
 
 
+## [2.0.21] - 23/10/2026
+
+### Fixed
+- **Fallback image preview on the Featured Image Manager settings page**: The preview showed the image at full size and filled the page. It now shows the thumbnail size, capped at 150px wide.
+- **Posts list showed two different "no image" thumbnails**: Posts that had the fallback image saved as their featured image (by "Save the fallback image into posts that have no featured image" after 2.0.18) showed the fallback picture, while posts with no featured image showed the dotted placeholder. Both now show the dotted placeholder with the "Set featured image" action.
+
+### Technical Details
+- `class-featured-image-manager.php`: the server-rendered preview uses `wp_get_attachment_image_url( $id, 'thumbnail' )`, falling back to the stored URL.
+- `class-featured-image-manager.php`: `get_thumbnail_column_markup()` treats a stored `_thumbnail_id` equal to `fallback_image_id` as empty.
+- `admin/assets/css/settings.css`: added a `.ksm-fallback-preview img` size rule.
+
 ## [2.0.20] - 17/10/2026
 
 ### Improved

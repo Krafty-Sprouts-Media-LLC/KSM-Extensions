@@ -263,3 +263,13 @@
 	font-size: 13px;
 	color: #646970;
 }
+
+/* Featured Image Manager: fallback image preview */
+.ksm-wrap.ksm-settings-page .ksm-fallback-preview img {
+	display: block;
+	max-width: 150px;
+	height: auto;
+	margin-bottom: 12px;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+}
